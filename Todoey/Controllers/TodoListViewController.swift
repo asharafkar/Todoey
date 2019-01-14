@@ -17,14 +17,9 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let newItem1 = Item(title: "Find Mike", done: false)
-        itemArray.append(newItem1)
-        
-        let newItem2 = Item(title: "Find Mike", done: false)
-        itemArray.append(newItem2)
-        
-        let newItem3 = Item(title: "Find Mike", done: false)
-        itemArray.append(newItem3)
+        if let items = defaults.array(forKey: "TodoListArray") as? [Item]{
+            itemArray = items
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,13 +30,10 @@ class TodoListViewController: UITableViewController {
         
 //        let cell = UITableViewCell.init(style: .default, reuseIdentifier: "ToDoItemCell")
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        
         cell.textLabel?.text = itemArray[indexPath.row].title
         
-        if itemArray[indexPath.row].done{
-            cell.accessoryType = .checkmark
-        }else{
-            cell.accessoryType = .none
-        }
+        cell.accessoryType = itemArray[indexPath.row].done ? .checkmark : .none
         
         return cell
     }
